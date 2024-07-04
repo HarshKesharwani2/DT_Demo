@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="d-flex align-items-center justify-content-center min-vh-100">
+  <div id="app" class="min-h-screen bg-gray-100 flex items-center justify-center">
     <EmployeeForm />
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 html, body, #app {
   height: 100%;
   width: 100%;

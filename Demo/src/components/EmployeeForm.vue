@@ -1,30 +1,30 @@
 <template>
-  <div class="container mt-5">
-    <h1>Employee Details</h1>
+  <div class="container">
+    <h1 class="text-3xl font-bold mb-4">Employee Details</h1>
     <form @submit.prevent="fetchEmployeeData" class="mb-4">
-      <div class="form-group">
-        <label for="employeeId">Employee ID:</label>
+      <div class="flex mb-4">
+        <label for="employeeId" class="mr-2">Employee ID:</label>
         <input
           type="text"
           v-model="employeeId"
           id="employeeId"
-          class="form-control"
+          class="border border-gray-300 px-3 py-2 rounded-md w-1/2"
           placeholder="Enter Employee ID"
           required
         />
       </div>
-      <button type="submit" class="btn btn-primary mt-2">Get Employee Data</button>
+      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
+        Get Employee Data
+      </button>
     </form>
-    <div v-if="employeeData" class="card">
-      <div class="card-body">
-        <h2 class="card-title text-dark">Employee Information</h2>
-        <p class="card-text text-dark"><strong>ID:</strong> {{ employeeData.data.id }}</p>
-        <p class="card-text text-dark"><strong>Name:</strong> {{ employeeData.data.employee_name }}</p>
-        <p class="card-text text-dark"><strong>Position:</strong> {{ employeeData.data.employee_salary }}</p>
-        <p class="card-text text-dark"><strong>Department:</strong> {{ employeeData.data.employee_age }}</p>
-      </div>
+    <div v-if="employeeData" class="card bg-gray-100 rounded-md p-4">
+      <h2 class="text-xl font-bold mb-2">Employee Information</h2>
+      <p><strong>ID:</strong> {{ employeeData.data.id }}</p>
+      <p><strong>Name:</strong> {{ employeeData.data.employee_name }}</p>
+      <p><strong>Salary:</strong> {{ employeeData.data.employee_salary }}</p>
+      <p><strong>Age:</strong> {{ employeeData.data.employee_age }}</p>
     </div>
-    <div v-if="errorMessage" class="alert alert-danger mt-4">
+    <div v-if="errorMessage" class="alert alert-danger mt-4 bg-red-100 text-red-600 p-3 rounded-md">
       {{ errorMessage }}
     </div>
   </div>
@@ -76,19 +76,7 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  color: black;
-}
-
-label {
-  color: #000;
-}
-
-/* div h2 {
-  color: #000
-} */
-
-/* div p {
-  color: #000
+/* .container{
+  background-color: black;
 } */
 </style>
