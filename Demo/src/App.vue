@@ -1,16 +1,18 @@
 <template>
-  <div id="app" class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <Navbar/>
+  <div id="app" class="bg-gray-100">
     <EmployeeForm />
   </div>
 </template>
 
 <script>
-import EmployeeForm from './components/EmployeeForm.vue';
-
+import EmployeeForm from './views/EmployeeForm.vue';
+import Navbar from './components/Navbar.vue';
 export default {
   name: 'App',
   components: {
     EmployeeForm,
+    Navbar,
   },
 };
 </script>

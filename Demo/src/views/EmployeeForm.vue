@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container m-5">
     <h1 class="text-3xl font-bold mb-4">Employee Details</h1>
     <form @submit.prevent="fetchEmployeeData" class="mb-4">
       <div class="flex mb-4">
-        <label for="employeeId" class="mr-2">Employee ID:</label>
+        <label for="employeeId" class="mr-2 content-center">Employee ID:</label>
         <input
           type="text"
           v-model="employeeId"
@@ -13,7 +13,7 @@
           required
         />
       </div>
-      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
+      <button type="submit" class="bg-gray-800 hover:bg-gray-600 text-white px-4 py-2 rounded-md">
         Get Employee Data
       </button>
     </form>
@@ -78,5 +78,6 @@ export default {
 <style scoped>
 /* .container{
   background-color: black;
+  bottom: 10%;
 } */
 </style>
