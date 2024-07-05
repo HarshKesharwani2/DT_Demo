@@ -81,8 +81,8 @@
             <p>&copy; Copyright 2024</p>
         </div>
 
-        <!-- Modal -->
-        <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <!-- View Modal -->
+        <div v-if="showViewModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white p-6 rounded-lg max-w-lg w-full">
                 <h3 class="text-xl font-bold mb-4">Employee Details</h3>
                 <p><strong>Name:</strong> {{ selectedEmployee.name }}</p>
@@ -91,6 +91,38 @@
                 <p><strong>Email:</strong> {{ selectedEmployee.email }}</p>
                 <div class="text-center mt-4">
                     <button @click="closeModal" class="bg-red-500 text-white py-2 px-4 rounded">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div v-if="showEditModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white p-6 rounded-lg max-w-lg w-full">
+                <h3 class="text-xl font-bold mb-4">Edit Employee</h3>
+                <div class="mb-4">
+                    <label for="editName" class="block mb-1">Name</label>
+                    <input v-model="editForm.name" id="editName" type="text" class="border p-2 rounded w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="editDepartment" class="block mb-1">Department</label>
+                    <select v-model="editForm.department" id="editDepartment" class="border p-2 rounded w-full">
+                        <option value="" disabled>Select Department</option>
+                        <option value="HR">HR</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Sales">Sales</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="editMobile" class="block mb-1">Mobile</label>
+                    <input v-model="editForm.mobile" id="editMobile" type="text" class="border p-2 rounded w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="editEmail" class="block mb-1">Email</label>
+                    <input v-model="editForm.email" id="editEmail" type="email" class="border p-2 rounded w-full">
+                </div>
+                <div class="text-center mt-4">
+                    <button @click="saveEmployee" class="bg-green-500 text-white py-2 px-4 rounded m-1">Save</button>
+                    <button @click="closeModal" class="bg-red-500 text-white py-2 px-4 rounded m-1">Cancel</button>
                 </div>
             </div>
         </div>
@@ -106,55 +138,82 @@ export default {
             email: '',
             department: '',
             employees: [
-                // Sample data for demonstration purposes
                 { name: 'John Doe', department: 'HR', mobile: '1234567890', email: 'john@example.com' },
                 { name: 'Jane Smith', department: 'Engineering', mobile: '0987654321', email: 'Smith@example.com' },
                 { name: 'Monkey D Luffy', department: 'Engineering', mobile: '0987654321', email: 'Luffy@example.com' },
                 { name: 'Batman', department: 'Engineering', mobile: '0987654321', email: 'Batman@example.com' },
                 { name: 'Naruto Usumaki', department: 'Engineering', mobile: '0987654321', email: 'Usumaki@example.com' },
                 { name: 'Goku', department: 'Engineering', mobile: '0987654321', email: 'Goku@example.com' },
-                // Add more sample employees as needed
             ],
+            filteredEmployees: [],
             currentPage: 1,
             pageSize: 5,
-            showModal: false,
+            showViewModal: false,
+            showEditModal: false,
             selectedEmployee: null,
+            editForm: {
+                name: '',
+                department: '',
+                mobile: '',
+                email: ''
+            }
         };
     },
     computed: {
         paginatedEmployees() {
             const start = (this.currentPage - 1) * this.pageSize;
             const end = start + this.pageSize;
-            return this.employees.slice(start, end);
+            return this.filteredEmployees.slice(start, end);
         },
         totalPages() {
-            return Math.ceil(this.employees.length / this.pageSize);
+            return Math.ceil(this.filteredEmployees.length / this.pageSize);
         },
+    },
+    mounted() {
+        this.filteredEmployees = this.employees;
     },
     methods: {
         search() {
-            // Add search logic
+            this.filteredEmployees = this.employees.filter(employee => {
+                return (
+                    (!this.employeeName || employee.name.toLowerCase().includes(this.employeeName.toLowerCase())) &&
+                    (!this.mobile || employee.mobile.includes(this.mobile)) &&
+                    (!this.email || employee.email.toLowerCase().includes(this.email.toLowerCase())) &&
+                    (!this.department || employee.department === this.department)
+                );
+            });
+            this.currentPage = 1; // Reset to first page after search
         },
         addEmployee() {
-            // Navigate to the add employee page using router
             this.$router.push('/AddEmployee');
         },
         addDepartment() {
-            // Navigate to the add department page using router
             this.$router.push('/AddDepartment');
         },
         viewEmployee(employee) {
             this.selectedEmployee = employee;
-            this.showModal = true;
+            this.showViewModal = true;
         },
         editEmployee(employee) {
-            // Edit employee logic
+            this.selectedEmployee = employee;
+            this.editForm = { ...employee };
+            this.showEditModal = true;
         },
         deleteEmployee(employee) {
-            // Delete employee logic
+            if (confirm("Are you sure?") == true) {
+                this.employees = this.employees.filter(emp => emp !== employee);
+                this.filteredEmployees = this.employees;
+            } else {
+                text = "You canceled!";
+            }
+        },
+        saveEmployee() {
+            Object.assign(this.selectedEmployee, this.editForm);
+            this.showEditModal = false;
         },
         closeModal() {
-            this.showModal = false;
+            this.showViewModal = false;
+            this.showEditModal = false;
         },
     },
 };
