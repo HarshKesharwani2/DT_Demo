@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import EmployeeForm from '../components/EmployeeForm.vue';
+import AddDepartment from '@/views/AddDepartment.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,14 +9,19 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
     },
     {
-      path: '/add-employee',
-      name: 'addEmployee',
-      component: EmployeeForm, // Replace with your actual component for adding employees
+      path: '/AddEmployee',
+      name: 'Empform',
+      component: EmployeeForm,
     },
-  ]
-})
+    {
+      path: '/AddDepartment',
+      name: 'AddDept',
+      component: AddDepartment,
+    },
+  ],
+});
 
-export default router
+export default router;

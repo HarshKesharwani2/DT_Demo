@@ -11,21 +11,21 @@
 
             <!-- Search Form -->
             <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="flex flex-row justify-between">
-                    <label for="employeeName" class="mb-1">Employee Name</label>
+                <div class="flex flex-row justify-between mx-20">
+                    <label for="employeeName" class="mb-1 content-center">Employee Name</label>
                     <input v-model="employeeName" id="employeeName" type="text" placeholder="Employee name"
                         class="border p-2 rounded">
                 </div>
-                <div class="flex flex-row justify-between">
-                    <label for="mobile" class="mb-1">Mobile</label>
+                <div class="flex flex-row justify-between mx-20">
+                    <label for="mobile" class="mb-1 content-center">Mobile</label>
                     <input v-model="mobile" id="mobile" type="text" placeholder="Mobile" class="border p-2 rounded">
                 </div>
-                <div class="flex flex-row justify-between">
-                    <label for="email" class="mb-1">Email</label>
+                <div class="flex flex-row justify-between mx-20">
+                    <label for="email" class="mb-1 content-center">Email</label>
                     <input v-model="email" id="email" type="email" placeholder="Email" class="border p-2 rounded">
                 </div>
-                <div class="flex flex-row justify-between">
-                    <label for="department" class="mb-1">Department</label>
+                <div class="flex flex-row justify-between mx-20">
+                    <label for="department" class="mb-1 content-center">Department</label>
                     <select v-model="department" id="department" class="border p-2 px-5 rounded">
                         <option value="" disabled selected>Select Department</option>
                         <option value="HR">HR</option>
@@ -38,8 +38,8 @@
             <!-- Action Buttons -->
             <div class="flex justify-between mb-4 mx-80">
                 <button @click="search" class="bg-blue-500 text-white py-2 px-4 rounded">Search</button>
-                <router-link to="/add-employee" class="bg-green-500 text-white py-2 px-4 rounded mr-2">Add
-                    Emp</router-link>
+                <!-- <RouterLink to="/add-employee">add emp </RouterLink> -->
+                <button @click="addEmployee" class="bg-green-500 text-white py-2 px-4 rounded">Add Dept</button>
                 <button @click="addDepartment" class="bg-yellow-500 text-white py-2 px-4 rounded">Add Dept</button>
             </div>
 
@@ -95,11 +95,11 @@ export default {
             employees: [
                 // Sample data for demonstration purposes
                 { name: 'John Doe', department: 'HR', mobile: '1234567890', email: 'john@example.com' },
-                { name: 'Jane Smith', department: 'Engineering', mobile: '0987654321', email: 'jane@example.com' },
-                { name: 'Monkey D Luffy', department: 'Engineering', mobile: '0987654321', email: 'jane@example.com' },
-                { name: 'Batman', department: 'Engineering', mobile: '0987654321', email: 'jane@example.com' },
-                { name: 'Naruto Usumaki', department: 'Engineering', mobile: '0987654321', email: 'jane@example.com' },
-                { name: 'Goku', department: 'Engineering', mobile: '0987654321', email: 'jane@example.com' },
+                { name: 'Jane Smith', department: 'Engineering', mobile: '0987654321', email: 'Smith@example.com' },
+                { name: 'Monkey D Luffy', department: 'Engineering', mobile: '0987654321', email: 'Luffy@example.com' },
+                { name: 'Batman', department: 'Engineering', mobile: '0987654321', email: 'Batman@example.com' },
+                { name: 'Naruto Usumaki', department: 'Engineering', mobile: '0987654321', email: 'Usumaki@example.com' },
+                { name: 'Goku', department: 'Engineering', mobile: '0987654321', email: 'Goku@example.com' },
                 // Add more sample employees as needed
             ],
             currentPage: 1,
@@ -123,10 +123,10 @@ export default {
         addEmployee() {
             // Add employee logic
             // Navigate to the add employee page using router
-            this.$router.push('/add-employee');
+            this.$router.push('/AddEmployee');
         },
         addDepartment() {
-            // Add department logic
+            this.$router.push('/AddDepartment')
         },
         viewEmployee(employee) {
             // View employee logic
