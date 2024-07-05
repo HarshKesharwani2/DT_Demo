@@ -1,5 +1,6 @@
 <template>
-  <Navbar/>
+  <!-- <Navbar/> -->
+  <Home />
   <!-- <div id="app" class="bg-gray-100">
     <EmployeeForm />
   </div> -->
@@ -9,11 +10,17 @@
 import { RouterLink, RouterView } from 'vue-router'
 // import HelloWorld from './components/HelloWorld.vue'
 import Navbar from './components/Navbar.vue'
+import Home from './views/Home.vue'
 
+// {
+//     Navbar,
+//     Home
+// }
 export default {
   name: 'App',
   components: {
-    Navbar,
+    // Navbar,
+    Home,
   }
 };
 </script>
