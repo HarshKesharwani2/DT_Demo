@@ -9,7 +9,7 @@
                     <label for="empName" class="block mb-1 content-center mr-10">Employee Name<span
                             class="text-red-500">*</span>:</label>
                     <input v-model="employeeName" id="empName" type="text" placeholder="Enter employee name"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                 </div>
 
                 <!-- Email -->
@@ -17,7 +17,7 @@
                     <label for="empEmail" class="block mb-1 content-center">Email<span
                             class="text-red-500">*</span>:</label>
                     <input v-model="email" id="empEmail" type="email" placeholder="Enter email address"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                 </div>
 
                 <!-- Mobile -->
@@ -25,7 +25,7 @@
                     <label for="empMobile" class="block mb-1 content-center">Mobile<span
                             class="text-red-500">*</span>:</label>
                     <input v-model="mobile" id="empMobile" type="text" placeholder="Enter mobile number"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                 </div>
 
                 <!-- Department -->
@@ -33,7 +33,7 @@
                     <label for="empDepartment" class="block mb-1 content-center">Department<span
                             class="text-red-500">*</span>:</label>
                     <input v-model="department" id="empDepartment" type="text" placeholder="Enter department"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                 </div>
 
                 <!-- Date of Birth (DOB) -->
@@ -41,7 +41,7 @@
                     <label for="empDOB" class="block mb-1 content-center">Date of Birth<span
                             class="text-red-500">*</span>:</label>
                     <input v-model="dob" id="empDOB" type="date"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                 </div>
 
                 <!-- Address -->
@@ -49,7 +49,8 @@
                     <label for="empAddress" class="block mb-1 content-center">Address<span
                             class="text-red-500">*</span>:</label>
                     <textarea v-model="address" id="empAddress" rows="3"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"></textarea>
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                        required></textarea>
                 </div>
 
                 <!-- Date of Joining (DOJ) -->
@@ -57,7 +58,7 @@
                     <label for="empDOJ" class="block mb-1 content-center">Date of Joining<span
                             class="text-red-500">*</span>:</label>
                     <input v-model="doj" id="empDOJ" type="date"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                 </div>
 
                 <!-- Gender -->
@@ -65,7 +66,7 @@
                     <label for="empGender" class="block mb-1 content-center">Gender<span
                             class="text-red-500">*</span>:</label>
                     <select v-model="gender" id="empGender"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                         <option value="" disabled>Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>

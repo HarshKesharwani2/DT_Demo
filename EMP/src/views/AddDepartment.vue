@@ -9,15 +9,15 @@
                     <label for="empName" class="block mb-1 content-center mr-10">Department Name<span
                             class="text-red-500">*</span>:</label>
                     <input v-model="employeeName" id="empName" type="text" placeholder="Enter employee name"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                 </div>
 
                 <!-- Department Type -->
                 <div class="flex flex-row justify-between mx-20">
                     <label for="empDept" class="block mb-1 content-center">Department Type<span
                             class="text-red-500">*</span>:</label>
-                    <select v-model="gender" id="empDept"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                    <select v-model="Type" id="empDept"
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                         <option value="" disabled>Select Type</option>
                         <option value="HR">HR</option>
                         <option value="Software Developer">Software Developer</option>
@@ -32,8 +32,8 @@
                 <div class="flex flex-row justify-between mx-20">
                     <label for="EmpBlock" class="block mb-1 content-center">Address/Block<span
                             class="text-red-500">*</span>:</label>
-                    <select v-model="gender" id="EmpBlock"
-                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                    <select v-model="Address" id="EmpBlock"
+                        class="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
                         <option value="" disabled>Select Address/Block</option>
                         <option value="Bhilai">Bhilai</option>
                         <option value="Durg">Durg</option>

@@ -38,8 +38,7 @@
             <!-- Action Buttons -->
             <div class="flex justify-between mb-4 mx-80">
                 <button @click="search" class="bg-blue-500 text-white py-2 px-4 rounded">Search</button>
-                <!-- <RouterLink to="/add-employee">add emp </RouterLink> -->
-                <button @click="addEmployee" class="bg-green-500 text-white py-2 px-4 rounded">Add Dept</button>
+                <button @click="addEmployee" class="bg-green-500 text-white py-2 px-4 rounded">Add Employee</button>
                 <button @click="addDepartment" class="bg-yellow-500 text-white py-2 px-4 rounded">Add Dept</button>
             </div>
 
@@ -62,11 +61,11 @@
                         <td class="py-2 px-4 border">{{ employee.email }}</td>
                         <td class="py-2 px-1 border flex justify-center items-center">
                             <button @click="viewEmployee(employee)"
-                                class="bg-blue-500 text-white py-1 px-2 rounded mx-2">view</button>
+                                class="bg-blue-500 text-white py-1 px-2 rounded mx-2">View</button>
                             <button @click="editEmployee(employee)"
-                                class="bg-yellow-500 text-white py-1 px-2 rounded mx-2">edit</button>
+                                class="bg-yellow-500 text-white py-1 px-2 rounded mx-2">Edit</button>
                             <button @click="deleteEmployee(employee)"
-                                class="bg-red-500 text-white py-1 px-2 rounded mx-2">delete</button>
+                                class="bg-red-500 text-white py-1 px-2 rounded mx-2">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -79,7 +78,21 @@
             </div>
         </div>
         <div class="border-2 border-black min-w-full border-t-0 flex justify-center item-center">
-            <p>@Copyright</p>
+            <p>&copy; Copyright 2024</p>
+        </div>
+
+        <!-- Modal -->
+        <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white p-6 rounded-lg max-w-lg w-full">
+                <h3 class="text-xl font-bold mb-4">Employee Details</h3>
+                <p><strong>Name:</strong> {{ selectedEmployee.name }}</p>
+                <p><strong>Department:</strong> {{ selectedEmployee.department }}</p>
+                <p><strong>Mobile:</strong> {{ selectedEmployee.mobile }}</p>
+                <p><strong>Email:</strong> {{ selectedEmployee.email }}</p>
+                <div class="text-center mt-4">
+                    <button @click="closeModal" class="bg-red-500 text-white py-2 px-4 rounded">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -104,6 +117,8 @@ export default {
             ],
             currentPage: 1,
             pageSize: 5,
+            showModal: false,
+            selectedEmployee: null,
         };
     },
     computed: {
@@ -121,21 +136,25 @@ export default {
             // Add search logic
         },
         addEmployee() {
-            // Add employee logic
             // Navigate to the add employee page using router
             this.$router.push('/AddEmployee');
         },
         addDepartment() {
-            this.$router.push('/AddDepartment')
+            // Navigate to the add department page using router
+            this.$router.push('/AddDepartment');
         },
         viewEmployee(employee) {
-            // View employee logic
+            this.selectedEmployee = employee;
+            this.showModal = true;
         },
         editEmployee(employee) {
             // Edit employee logic
         },
         deleteEmployee(employee) {
             // Delete employee logic
+        },
+        closeModal() {
+            this.showModal = false;
         },
     },
 };
