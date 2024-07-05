@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <Navbar/>
   <div id="app" class="bg-gray-100">
     <EmployeeForm />
@@ -30,4 +30,31 @@ html, body, #app {
   justify-content: center;
   background-color: #f8f9fa; /* Optional: Background color for the entire app */
 }
+</style> -->
+
+<template>
+  <div id="app">
+    <header class="bg-gray-800 text-white p-4">
+      <nav class="container mx-auto flex justify-between">
+        <div class="text-xl font-bold">Employee Management</div>
+        <div>
+          <router-link class="mr-4" to="/">Home</router-link>
+          <router-link to="/add-employee">Add Employee</router-link>
+        </div>
+      </nav>
+    </header>
+    <main class="container mx-auto p-4">
+      <router-view></router-view>
+    </main>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'App',
+};
+</script>
+
+<style>
+@import './index.css';
 </style>
