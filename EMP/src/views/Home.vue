@@ -10,55 +10,39 @@
             </div>
 
             <!-- Search Form -->
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="flex flex-row justify-between mx-20">
-                    <label for="employeeName" class="mb-1 content-center">Employee Name</label>
-                    <input v-model="employeeName" id="employeeName" type="text" placeholder="Employee name"
+            <div class="flex flex-col gap-4 mb-4">
+                <div class="flex flex-row space-x-6 items-center justify-center mx-20">
+                    <label for="employeeId" class="mb-1">Employee ID</label>
+                    <input v-model="employeeId" id="employeeId" type="text" placeholder="Employee ID"
                         class="border p-2 rounded">
+                    <button @click="search" class="bg-blue-500 text-white py-2 px-4 rounded">Search</button>
                 </div>
-                <div class="flex flex-row justify-between mx-20">
-                    <label for="mobile" class="mb-1 content-center">Mobile</label>
-                    <input v-model="mobile" id="mobile" type="text" placeholder="Mobile" class="border p-2 rounded">
-                </div>
-                <div class="flex flex-row justify-between mx-20">
-                    <label for="email" class="mb-1 content-center">Email</label>
-                    <input v-model="email" id="email" type="email" placeholder="Email" class="border p-2 rounded">
-                </div>
-                <div class="flex flex-row justify-between mx-20">
-                    <label for="department" class="mb-1 content-center">Department</label>
-                    <select v-model="department" id="department" class="border p-2 px-5 rounded">
-                        <option value="" disabled selected>Select Department</option>
-                        <option value="HR">HR</option>
-                        <option value="Engineering">Engineering</option>
-                        <option value="Sales">Sales</option>
-                    </select>
-                </div>
-            </div>
 
-            <!-- Action Buttons -->
-            <div class="flex justify-between mb-4 mx-80">
-                <button @click="search" class="bg-blue-500 text-white py-2 px-4 rounded">Search</button>
-                <button @click="addEmployee" class="bg-green-500 text-white py-2 px-4 rounded">Add Employee</button>
-                <button @click="addDepartment" class="bg-yellow-500 text-white py-2 px-4 rounded">Add Dept</button>
+                <div class="flex space-x-6 justify-center mb-4 mx-20">
+                    <button @click="addEmployee" class="bg-green-500 text-white py-2 px-4 rounded">Add Employee</button>
+                    <button @click="addDepartment" class="bg-yellow-500 text-white py-2 px-4 rounded">Add Dept</button>
+                </div>
             </div>
 
             <!-- Data Table -->
             <table class="min-w-full bg-white">
                 <thead>
                     <tr>
-                        <th class="py-2 px-4 border">emp_name</th>
-                        <th class="py-2 px-4 border">department</th>
-                        <th class="py-2 px-4 border">mobile</th>
-                        <th class="py-2 px-4 border">email</th>
-                        <th class="py-2 px-4 border">action</th>
+                        <th class="py-2 px-4 border">Id</th>
+                        <th class="py-2 px-4 border">Employee Name</th>
+                        <th class="py-2 px-4 border">Salary</th>
+                        <th class="py-2 px-4 border">Age</th>
+                        <th class="py-2 px-4 border">Profile Image</th>
+                        <th class="py-2 px-4 border">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(employee, index) in paginatedEmployees" :key="index">
-                        <td class="py-2 px-4 border">{{ employee.name }}</td>
-                        <td class="py-2 px-4 border">{{ employee.department }}</td>
-                        <td class="py-2 px-4 border">{{ employee.mobile }}</td>
-                        <td class="py-2 px-4 border">{{ employee.email }}</td>
+                        <td class="py-2 px-4 border">{{ employee.id }}</td>
+                        <td class="py-2 px-4 border">{{ employee.employee_name }}</td>
+                        <td class="py-2 px-4 border">{{ employee.employee_salary }}</td>
+                        <td class="py-2 px-4 border">{{ employee.employee_age }}</td>
+                        <td class="py-2 px-4 border">{{ employee.profile_image }}</td>
                         <td class="py-2 px-1 border flex justify-center items-center">
                             <button @click="viewEmployee(employee)"
                                 class="bg-blue-500 text-white py-1 px-2 rounded mx-2">View</button>
@@ -77,7 +61,7 @@
                     class="mx-1 bg-blue-500 text-white py-1 px-3 rounded">{{ page }}</button>
             </div>
         </div>
-        <div class="border-2 border-black min-w-full border-t-0 flex justify-center item-center">
+        <div class="border-2 border-black min-w-full border-t-0 flex justify-center items-center">
             <p>&copy; Copyright 2024</p>
         </div>
 
@@ -85,10 +69,10 @@
         <div v-if="showViewModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white p-6 rounded-lg max-w-lg w-full">
                 <h3 class="text-xl font-bold mb-4">Employee Details</h3>
-                <p><strong>Name:</strong> {{ selectedEmployee.name }}</p>
-                <p><strong>Department:</strong> {{ selectedEmployee.department }}</p>
-                <p><strong>Mobile:</strong> {{ selectedEmployee.mobile }}</p>
-                <p><strong>Email:</strong> {{ selectedEmployee.email }}</p>
+                <p><strong>Name:</strong> {{ selectedEmployee.employee_name }}</p>
+                <p><strong>Salary:</strong> {{ selectedEmployee.employee_salary }}</p>
+                <p><strong>Age:</strong> {{ selectedEmployee.employee_age }}</p>
+                <p><strong>Profile Image:</strong> {{ selectedEmployee.profile_image }}</p>
                 <div class="text-center mt-4">
                     <button @click="closeModal" class="bg-red-500 text-white py-2 px-4 rounded">Close</button>
                 </div>
@@ -101,24 +85,21 @@
                 <h3 class="text-xl font-bold mb-4">Edit Employee</h3>
                 <div class="mb-4">
                     <label for="editName" class="block mb-1">Name</label>
-                    <input v-model="editForm.name" id="editName" type="text" class="border p-2 rounded w-full">
+                    <input v-model="editForm.employee_name" id="editName" type="text" class="border p-2 rounded w-full">
                 </div>
                 <div class="mb-4">
-                    <label for="editDepartment" class="block mb-1">Department</label>
-                    <select v-model="editForm.department" id="editDepartment" class="border p-2 rounded w-full">
-                        <option value="" disabled>Select Department</option>
-                        <option value="HR">HR</option>
-                        <option value="Engineering">Engineering</option>
-                        <option value="Sales">Sales</option>
-                    </select>
+                    <label for="editSalary" class="block mb-1">Salary</label>
+                    <input v-model="editForm.employee_salary" id="editSalary" type="text"
+                        class="border p-2 rounded w-full">
                 </div>
                 <div class="mb-4">
-                    <label for="editMobile" class="block mb-1">Mobile</label>
-                    <input v-model="editForm.mobile" id="editMobile" type="text" class="border p-2 rounded w-full">
+                    <label for="editAge" class="block mb-1">Age</label>
+                    <input v-model="editForm.employee_age" id="editAge" type="text" class="border p-2 rounded w-full">
                 </div>
                 <div class="mb-4">
-                    <label for="editEmail" class="block mb-1">Email</label>
-                    <input v-model="editForm.email" id="editEmail" type="email" class="border p-2 rounded w-full">
+                    <label for="editProfileImage" class="block mb-1">Profile Image</label>
+                    <input v-model="editForm.profile_image" id="editProfileImage" type="text"
+                        class="border p-2 rounded w-full">
                 </div>
                 <div class="text-center mt-4">
                     <button @click="saveEmployee" class="bg-green-500 text-white py-2 px-4 rounded m-1">Save</button>
@@ -129,95 +110,112 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            employeeName: '',
-            mobile: '',
-            email: '',
-            department: '',
-            employees: [
-                { name: 'John Doe', department: 'HR', mobile: '1234567890', email: 'john@example.com' },
-                { name: 'Jane Smith', department: 'Engineering', mobile: '0987654321', email: 'Smith@example.com' },
-                { name: 'Monkey D Luffy', department: 'Engineering', mobile: '0987654321', email: 'Luffy@example.com' },
-                { name: 'Batman', department: 'Engineering', mobile: '0987654321', email: 'Batman@example.com' },
-                { name: 'Naruto Usumaki', department: 'Engineering', mobile: '0987654321', email: 'Usumaki@example.com' },
-                { name: 'Goku', department: 'Engineering', mobile: '0987654321', email: 'Goku@example.com' },
-            ],
-            filteredEmployees: [],
-            currentPage: 1,
-            pageSize: 5,
-            showViewModal: false,
-            showEditModal: false,
-            selectedEmployee: null,
-            editForm: {
-                name: '',
-                department: '',
-                mobile: '',
-                email: ''
-            }
-        };
-    },
-    computed: {
-        paginatedEmployees() {
-            const start = (this.currentPage - 1) * this.pageSize;
-            const end = start + this.pageSize;
-            return this.filteredEmployees.slice(start, end);
-        },
-        totalPages() {
-            return Math.ceil(this.filteredEmployees.length / this.pageSize);
-        },
-    },
-    mounted() {
-        this.filteredEmployees = this.employees;
-    },
-    methods: {
-        search() {
-            this.filteredEmployees = this.employees.filter(employee => {
-                return (
-                    (!this.employeeName || employee.name.toLowerCase().includes(this.employeeName.toLowerCase())) &&
-                    (!this.mobile || employee.mobile.includes(this.mobile)) &&
-                    (!this.email || employee.email.toLowerCase().includes(this.email.toLowerCase())) &&
-                    (!this.department || employee.department === this.department)
-                );
-            });
-            this.currentPage = 1; // Reset to first page after search
-        },
-        addEmployee() {
-            this.$router.push('/AddEmployee');
-        },
-        addDepartment() {
-            this.$router.push('/AddDepartment');
-        },
-        viewEmployee(employee) {
-            this.selectedEmployee = employee;
-            this.showViewModal = true;
-        },
-        editEmployee(employee) {
-            this.selectedEmployee = employee;
-            this.editForm = { ...employee };
-            this.showEditModal = true;
-        },
-        deleteEmployee(employee) {
-            if (confirm("Are you sure?") == true) {
-                this.employees = this.employees.filter(emp => emp !== employee);
-                this.filteredEmployees = this.employees;
-            } else {
-                text = "You canceled!";
-            }
-        },
-        saveEmployee() {
-            Object.assign(this.selectedEmployee, this.editForm);
-            this.showEditModal = false;
-        },
-        closeModal() {
-            this.showViewModal = false;
-            this.showEditModal = false;
-        },
-    },
+
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useUserStore } from '../stores/index';
+import { useRouter } from 'vue-router';
+
+const userStore = useUserStore();
+const router = useRouter();
+
+// Local state for the component
+const employeeId = ref('');
+
+const currentPage = ref(1);
+const pageSize = 5;
+
+const showViewModal = ref(false);
+const showEditModal = ref(false);
+
+const selectedEmployee = ref(null);
+const editForm = ref({
+    employee_name: '',
+    employee_salary: '',
+    employee_age: '',
+    profile_image: ''
+});
+
+// Computed properties
+const employees = computed(() => userStore.allUsers);
+const filteredEmployees = ref([]);
+
+const paginatedEmployees = computed(() => {
+    const start = (currentPage.value - 1) * pageSize;
+    const end = start + pageSize;
+    return filteredEmployees.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+    return Math.ceil(filteredEmployees.value.length / pageSize);
+});
+
+// Fetch employees when component is mounted
+onMounted(async () => {
+    await userStore.fetchUsers();
+    filteredEmployees.value = employees.value;
+});
+
+// Methods
+const search = () => {
+    filteredEmployees.value = employees.value.filter(employee => {
+        return (
+            !employeeId.value || employee.id.toLowerCase().includes(employeeId.value.toLowerCase())
+        );
+    });
+    currentPage.value = 1; // Reset to first page after search
+};
+
+const addEmployee = () => {
+    router.push('/AddEmployee');
+};
+
+const addDepartment = () => {
+    router.push('/AddDepartment');
+};
+
+const viewEmployee = (employee) => {
+    selectedEmployee.value = employee;
+    showViewModal.value = true;
+};
+
+const editEmployee = (employee) => {
+    selectedEmployee.value = employee;
+    editForm.value = { ...employee };
+    showEditModal.value = true;
+};
+
+const deleteEmployee = async (employee) => {
+    // console.log("hello world");
+    console.log(employee);
+    if (confirm("Are you sure?")) {
+        try {
+            // selectedEmployee.value = employee;
+            console.log(employee.id);
+            await userStore.deleteUser(employee.id);
+            console.log("harsh");
+            closeModal();
+        } catch (error) {
+            console.error('Error deleting employee:', error);
+        }
+    }
+};
+
+const saveEmployee = async () => {
+    try {
+        await userStore.updateUser(selectedEmployee.value.id, editForm.value);
+        closeModal();
+    } catch (error) {
+        console.error('Error saving employee:', error);
+    }
+};
+
+const closeModal = () => {
+    showViewModal.value = false;
+    showEditModal.value = false;
 };
 </script>
+
 
 <style scoped>
 /* Add any additional styling if necessary */

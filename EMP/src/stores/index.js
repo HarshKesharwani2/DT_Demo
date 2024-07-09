@@ -1,3 +1,4 @@
+// stores/userStore.js
 import { defineStore } from 'pinia';
 import { getUsers, getUser, createUser, updateUser, deleteUser } from '../services/api';
 
@@ -38,7 +39,7 @@ export const useUserStore = defineStore('user', {
             this.error = null;
             try {
                 await createUser(user);
-                await this.fetchUsers(); // Refresh the user list
+                await this.fetchUsers();
             } catch (error) {
                 this.error = error.message;
             } finally {
@@ -50,7 +51,7 @@ export const useUserStore = defineStore('user', {
             this.error = null;
             try {
                 await updateUser(id, user);
-                await this.fetchUsers(); // Refresh the user list
+                await this.fetchUsers();
             } catch (error) {
                 this.error = error.message;
             } finally {
@@ -62,7 +63,7 @@ export const useUserStore = defineStore('user', {
             this.error = null;
             try {
                 await deleteUser(id);
-                await this.fetchUsers(); // Refresh the user list
+                // await this.fetchUsers();
             } catch (error) {
                 this.error = error.message;
             } finally {
@@ -74,6 +75,6 @@ export const useUserStore = defineStore('user', {
         allUsers: (state) => state.users,
         singleUser: (state) => state.user,
         isLoading: (state) => state.loading,
-        error: (state) => state.error,
+        errorMessage: (state) => state.error,
     },
 });

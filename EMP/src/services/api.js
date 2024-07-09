@@ -19,5 +19,6 @@ export const updateUser = (id, user) => {
 };
 
 export const deleteUser = (id) => {
+    console.log("object");
     return axios.delete(`${API_BASE_URL}/api/v1/delete/${id}`);
 };
