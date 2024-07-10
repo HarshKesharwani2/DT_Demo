@@ -24,42 +24,11 @@
                 </div>
             </div>
 
-            <!-- Data Table -->
-            <table class="min-w-full bg-white">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 border">Id</th>
-                        <th class="py-2 px-4 border">Employee Name</th>
-                        <th class="py-2 px-4 border">Salary</th>
-                        <th class="py-2 px-4 border">Age</th>
-                        <th class="py-2 px-4 border">Profile Image</th>
-                        <th class="py-2 px-4 border">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(employee, index) in paginatedEmployees" :key="index">
-                        <td class="py-2 px-4 border">{{ employee.id }}</td>
-                        <td class="py-2 px-4 border">{{ employee.employee_name }}</td>
-                        <td class="py-2 px-4 border">{{ employee.employee_salary }}</td>
-                        <td class="py-2 px-4 border">{{ employee.employee_age }}</td>
-                        <td class="py-2 px-4 border">{{ employee.profile_image }}</td>
-                        <td class="py-2 px-1 border flex justify-center items-center">
-                            <button @click="viewEmployee(employee)"
-                                class="bg-blue-500 text-white py-1 px-2 rounded mx-2">View</button>
-                            <button @click="editEmployee(employee)"
-                                class="bg-yellow-500 text-white py-1 px-2 rounded mx-2">Edit</button>
-                            <button @click="deleteEmployee(employee)"
-                                class="bg-red-500 text-white py-1 px-2 rounded mx-2">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- Pagination -->
-            <div class="flex justify-center mt-4">
-                <button v-for="page in totalPages" :key="page" @click="currentPage = page"
-                    class="mx-1 bg-blue-500 text-white py-1 px-3 rounded">{{ page }}</button>
-            </div>
+            <!-- AG Grid Table -->
+            <ag-grid-vue class="ag-theme-alpine" style="width: 100%; height: 500px;" :columnDefs="columnDefs"
+                :rowData="filteredEmployees" :pagination="true" :paginationPageSize="pageSize"
+                :paginationPageSizeSelector="[5, 10, 20]" @grid-ready="onGridReady">
+            </ag-grid-vue>
         </div>
         <div class="border-2 border-black min-w-full border-t-0 flex justify-center items-center">
             <p>&copy; Copyright 2024</p>
@@ -110,20 +79,20 @@
     </div>
 </template>
 
-
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '../stores/index';
 import { useRouter } from 'vue-router';
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-alpine.css";  // Ensure this matches your theme
+import { AgGridVue } from 'ag-grid-vue3';
 
 const userStore = useUserStore();
 const router = useRouter();
 
 // Local state for the component
 const employeeId = ref('');
-
-const currentPage = ref(1);
-const pageSize = 5;
+const pageSize = 9;
 
 const showViewModal = ref(false);
 const showEditModal = ref(false);
@@ -136,51 +105,24 @@ const editForm = ref({
     profile_image: ''
 });
 
-// Computed properties
-const employees = computed(() => userStore.allUsers);
-const filteredEmployees = ref([]);
+// Declare gridApi and gridColumnApi
+let gridApi = null;
+let gridColumnApi = null;
 
-const paginatedEmployees = computed(() => {
-    const start = (currentPage.value - 1) * pageSize;
-    const end = start + pageSize;
-    return filteredEmployees.value.slice(start, end);
-});
-
-const totalPages = computed(() => {
-    return Math.ceil(filteredEmployees.value.length / pageSize);
-});
-
-// Fetch employees when component is mounted
-onMounted(async () => {
-    await userStore.fetchUsers();
-    filteredEmployees.value = employees.value;
-});
+// AG Grid methods
+const onGridReady = (params) => {
+    gridApi = params.api;
+    gridColumnApi = params.columnApi;
+    gridApi.setRowData(filteredEmployees.value);
+};
 
 // Methods
-const search = (employeeId) => {
-    if (!employeeId) {
-        // Handle the case where employeeId is undefined or null
-        filteredEmployees.value = employees.value;
-        currentPage.value = 1; // Reset to first page
-        return;
-    }
-
-    console.log('Search initiated with employeeId:', employeeId);
-
-    const searchIdStr = employeeId.toString().toLowerCase(); // Convert to string safely
-
+const search = () => {
     filteredEmployees.value = employees.value.filter(employee => {
-        const empIdStr = employee.id.toString().toLowerCase();
-        const matches = empIdStr.includes(searchIdStr);
-
-        console.log('Checking employee:', employee);
-        console.log('empIdStr:', empIdStr, 'searchIdStr:', searchIdStr, 'matches:', matches);
-
-        return matches;
+        return (
+            !employeeId.value || employee.id.toLowerCase().includes(employeeId.value.toLowerCase())
+        );
     });
-
-    currentPage.value = 1; // Reset to first page after search
-    console.log('Filtered employees:', filteredEmployees.value);
 };
 
 const addEmployee = () => {
@@ -203,14 +145,9 @@ const editEmployee = (employee) => {
 };
 
 const deleteEmployee = async (employee) => {
-    // console.log("hello world");
-    console.log(employee);
     if (confirm("Are you sure?")) {
         try {
-            // selectedEmployee.value = employee;
-            console.log(employee.id);
             await userStore.deleteUser(employee.id);
-            console.log("harsh");
             closeModal();
         } catch (error) {
             console.error('Error deleting employee:', error);
@@ -231,9 +168,37 @@ const closeModal = () => {
     showViewModal.value = false;
     showEditModal.value = false;
 };
+
+// AG Grid configuration
+const columnDefs = [
+    { headerName: 'Id', field: 'id' },
+    { headerName: 'Employee Name', field: 'employee_name' },
+    { headerName: 'Salary', field: 'employee_salary' },
+    { headerName: 'Age', field: 'employee_age' },
+    { headerName: 'Profile Image', field: 'profile_image' },
+    {
+        headerName: 'Action',
+        field: 'action',
+        cellRenderer: 'actionCellRenderer',
+        cellRendererParams: {
+            onView: viewEmployee,
+            onEdit: editEmployee,
+            onDelete: deleteEmployee
+        }
+    }
+];
+
+// Computed properties
+const employees = computed(() => userStore.allUsers);
+const filteredEmployees = ref([]);
+
+// Fetch employees when component is mounted
+onMounted(async () => {
+    await userStore.fetchUsers();
+    filteredEmployees.value = employees.value;
+});
 </script>
 
-
 <style scoped>
-/* Add any additional styling if necessary */
+/* / Add any additional styling if necessary / */
 </style>
