@@ -1,7 +1,7 @@
 <!-- AddEmployee.vue -->
 <template>
-    <div class="bg-gradient-to-b from-blue-300 to-blue-600 items-center p-6">
-        <div class="w-full mx-auto">
+    <div class="min-h-screen bg-gradient-to-b from-blue-300 to-blue-500 items-center p-6">
+        <div class="mx-auto">
             <h2 class="text-2xl font-bold mb-4">Add Employee</h2>
             <!-- Form for adding employee -->
             <form @submit.prevent="submitForm" class="space-y-4">

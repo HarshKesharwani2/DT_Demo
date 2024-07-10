@@ -157,13 +157,30 @@ onMounted(async () => {
 });
 
 // Methods
-const search = () => {
+const search = (employeeId) => {
+    if (!employeeId) {
+        // Handle the case where employeeId is undefined or null
+        filteredEmployees.value = employees.value;
+        currentPage.value = 1; // Reset to first page
+        return;
+    }
+
+    console.log('Search initiated with employeeId:', employeeId);
+
+    const searchIdStr = employeeId.toString().toLowerCase(); // Convert to string safely
+
     filteredEmployees.value = employees.value.filter(employee => {
-        return (
-            !employeeId.value || employee.id.toLowerCase().includes(employeeId.value.toLowerCase())
-        );
+        const empIdStr = employee.id.toString().toLowerCase();
+        const matches = empIdStr.includes(searchIdStr);
+
+        console.log('Checking employee:', employee);
+        console.log('empIdStr:', empIdStr, 'searchIdStr:', searchIdStr, 'matches:', matches);
+
+        return matches;
     });
+
     currentPage.value = 1; // Reset to first page after search
+    console.log('Filtered employees:', filteredEmployees.value);
 };
 
 const addEmployee = () => {
