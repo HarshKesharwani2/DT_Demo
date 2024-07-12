@@ -27,7 +27,8 @@
             <!-- AG Grid Table -->
             <ag-grid-vue class="ag-theme-alpine" style="width: 100%; height: 500px;" :columnDefs="columnDefs"
                 :rowData="filteredEmployees" :pagination="true" :paginationPageSize="pageSize"
-                :paginationPageSizeSelector="[5, 10, 20]" @grid-ready="onGridReady">
+                :paginationPageSizeSelector="false"  :frameworkComponents="frameworkComponents"
+                @grid-ready="onGridReady">
             </ag-grid-vue>
         </div>
         <div class="border-2 border-black min-w-full border-t-0 flex justify-center items-center">
@@ -84,8 +85,9 @@ import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '../stores/index';
 import { useRouter } from 'vue-router';
 import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";  // Ensure this matches your theme
+import "ag-grid-community/styles/ag-theme-alpine.css";
 import { AgGridVue } from 'ag-grid-vue3';
+import ActionCellRenderer from './ActionCellRenderer.vue';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -113,7 +115,7 @@ let gridColumnApi = null;
 const onGridReady = (params) => {
     gridApi = params.api;
     gridColumnApi = params.columnApi;
-    gridApi.setRowData(filteredEmployees.value);
+    gridApi.applyTransaction({ add: filteredEmployees.value });
 };
 
 // Methods
@@ -174,19 +176,24 @@ const columnDefs = [
     { headerName: 'Id', field: 'id' },
     { headerName: 'Employee Name', field: 'employee_name' },
     { headerName: 'Salary', field: 'employee_salary' },
-    { headerName: 'Age', field: 'employee_age' },
-    { headerName: 'Profile Image', field: 'profile_image' },
+    { headerName: 'Age', field: 'employee_age', filter: true },
+    { headerName: 'Profile Image', field: 'profile_image', editable: true },
     {
         headerName: 'Action',
         field: 'action',
-        cellRenderer: 'actionCellRenderer',
-        cellRendererParams: {
-            onView: viewEmployee,
-            onEdit: editEmployee,
-            onDelete: deleteEmployee
-        }
+        cellRenderer: ActionCellRenderer,
+        // cellRendererParams: {
+        //     onView: viewEmployee,
+        //     onEdit: editEmployee,
+        //     onDelete: deleteEmployee
+        // }
     }
 ];
+
+// Framework components for AG Grid
+const frameworkComponents = {
+    actionCellRenderer: ActionCellRenderer
+};
 
 // Computed properties
 const employees = computed(() => userStore.allUsers);
@@ -200,5 +207,5 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* / Add any additional styling if necessary / */
+/* Add any additional styling if necessary */
 </style>
